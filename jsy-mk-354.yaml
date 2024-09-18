@@ -1,0 +1,798 @@
+uart:
+  tx_pin: $txpin
+  rx_pin: $rxpin
+  baud_rate: 9600
+  data_bits: 8
+  parity: NONE
+  stop_bits: 1 
+  id: rs485 
+
+modbus:
+  id: modbus1
+  uart_id: rs485
+  send_wait_time: 200ms
+
+modbus_controller:
+- id: modbus_device
+  address: 1
+  modbus_id: modbus1
+  command_throttle: 500ms
+
+sensor:  
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Voltage upper limit"
+    id: Vollim
+    register_type: holding
+    address: 0x0020
+    value_type: U_WORD
+    device_class: voltage
+    state_class: measurement
+    unit_of_measurement: V
+    
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Current limit "
+    id: Curlim
+    register_type: holding
+    address: 0x0021
+    value_type: U_WORD
+    device_class: current
+    state_class: measurement
+    unit_of_measurement: A
+    filters:
+      - multiply: 0.1
+  
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Voltage L1"
+    id: VolL1N
+    register_type: holding
+    address: 0x0100
+    device_class: voltage
+    state_class: measurement
+    unit_of_measurement: V
+    accuracy_decimals: 1
+    value_type: U_WORD
+    filters:
+      - multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Voltage L2"
+    id: VolL2N
+    register_type: holding
+    address: 0x0101
+    device_class: voltage
+    state_class: measurement
+    unit_of_measurement: V
+    accuracy_decimals: 1
+    value_type: U_WORD
+    filters:
+      - multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Voltage L3"
+    id: VolL3N
+    register_type: holding
+    address: 0x0102
+    device_class: voltage
+    state_class: measurement
+    unit_of_measurement: V
+    accuracy_decimals: 1
+    value_type: U_WORD
+    filters:
+      - multiply: 0.01
+
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Current L1"
+    id: AmpL1
+    register_type: holding
+    address: 0x0103
+    device_class: current
+    state_class: measurement
+    unit_of_measurement: A
+    accuracy_decimals: 1
+    value_type: U_WORD
+    filters:
+      - multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Current L2"
+    id: AmpL2
+    register_type: holding
+    address: 0x0104
+    device_class: current
+    state_class: measurement
+    unit_of_measurement: A
+    accuracy_decimals: 1
+    value_type: U_WORD
+    filters:
+      - multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Current L3"
+    id: AmpL3
+    register_type: holding
+    address: 0x0105
+    device_class: current
+    state_class: measurement
+    unit_of_measurement: A
+    accuracy_decimals: 1
+    value_type: U_WORD
+    filters:
+      - multiply: 0.01
+
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Active Power L1"
+    id: akWL1
+    register_type: holding
+    address: 0x0106
+    device_class: power
+    state_class: measurement
+    unit_of_measurement: W
+    accuracy_decimals: 1
+    value_type: U_WORD  
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Active Power L2"
+    id: akWL2
+    register_type: holding
+    address: 0x0107
+    device_class: power
+    state_class: measurement
+    unit_of_measurement: W
+    accuracy_decimals: 1
+    value_type: U_WORD  
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Active Power L3"
+    id: akWL3
+    register_type: holding
+    address: 0x0108
+    device_class: power
+    state_class: measurement
+    unit_of_measurement: W
+    accuracy_decimals: 1
+    value_type: U_WORD  
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Total Active Power"
+    id: akW
+    register_type: holding
+    address: 0x0109
+    device_class: power
+    state_class: measurement
+    unit_of_measurement: W
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+  
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Reactive Power L1"
+    id: varL1
+    register_type: holding
+    address: 0x010B    
+    device_class: power
+    state_class: measurement
+    unit_of_measurement: VAR
+    accuracy_decimals: 1
+    value_type: U_WORD
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Reactive Power L2"
+    id: varL2
+    register_type: holding
+    address: 0x010C    
+    device_class: power
+    state_class: measurement
+    unit_of_measurement: VAR
+    accuracy_decimals: 1
+    value_type: U_WORD
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Reactive Power L3"
+    id: varL3
+    register_type: holding
+    address: 0x010D    
+    device_class: power
+    state_class: measurement
+    unit_of_measurement: VAR
+    accuracy_decimals: 1
+    value_type: U_WORD
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Total Reactive Power"
+    id: var
+    register_type: holding
+    address: 0x010E 
+    device_class: power
+    state_class: measurement
+    unit_of_measurement: VAR
+    accuracy_decimals: 1
+    value_type: U_DWORD
+  
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Apparent Power L1"
+    id: vaL1
+    register_type: holding
+    address: 0x0110    
+    device_class: power
+    state_class: measurement
+    unit_of_measurement: VA
+    accuracy_decimals: 1
+    value_type: U_WORD
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Apparent Power L2"
+    id: vaL2
+    register_type: holding
+    address: 0x0111    
+    device_class: power
+    state_class: measurement
+    unit_of_measurement: VA
+    accuracy_decimals: 1
+    value_type: U_WORD
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Apparent Power L3"
+    id: vaL3
+    register_type: holding
+    address: 0x0112    
+    device_class: power
+    state_class: measurement
+    unit_of_measurement: VA
+    accuracy_decimals: 1
+    value_type: U_WORD
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Total Apparent Power"
+    id: va
+    register_type: holding
+    address: 0x0113
+    device_class: power
+    state_class: measurement
+    unit_of_measurement: VA
+    accuracy_decimals: 1
+    value_type: U_DWORD
+  
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Frequency"
+    id: hz
+    register_type: holding
+    address: 0x0115    
+    device_class: frequency
+    state_class: measurement
+    unit_of_measurement: Hz
+    accuracy_decimals: 2
+    value_type: U_WORD
+    filters:
+      - multiply: 0.01
+  
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Power Factor L1"
+    id: phL1
+    register_type: holding
+    address: 0x0116    
+    device_class: power_factor
+    state_class: measurement
+    unit_of_measurement: "%"
+    accuracy_decimals: 2
+    value_type: U_WORD
+    filters:
+      - multiply: 0.001
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Power Factor L2"
+    id: phL2
+    register_type: holding
+    address: 0x0117    
+    device_class: power_factor
+    state_class: measurement
+    unit_of_measurement: "%"
+    accuracy_decimals: 2
+    value_type: U_WORD
+    filters:
+      - multiply: 0.001
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Power Factor L3"
+    id: phL3
+    register_type: holding
+    address: 0x0118    
+    device_class: power_factor
+    state_class: measurement
+    unit_of_measurement: "%"
+    accuracy_decimals: 2
+    value_type: U_WORD
+    filters:
+      - multiply: 0.001
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Total Power Factor"
+    id: ph
+    register_type: holding
+    address: 0x0119   
+    device_class: power_factor
+    state_class: measurement
+    unit_of_measurement: "%"
+    accuracy_decimals: 2
+    value_type: U_WORD
+    filters:
+      - multiply: 0.001
+
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Active Energy L1"
+    id: kWhL1
+    register_type: holding
+    address: 0x011A
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kWh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Active Energy L2"
+    id: kWhL2
+    register_type: holding
+    address: 0x011C
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kWh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Active Energy L3"
+    id: kWhL3
+    register_type: holding
+    address: 0x011E
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kWh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Total Active Energy"
+    id: kWh
+    register_type: holding
+    address: 0x0120
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kWh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Reactive Energy L1"
+    id: kVARhL1
+    register_type: holding
+    address: 0x0122
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kVARh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Reactive Energy L2"
+    id: kVARhL2
+    register_type: holding
+    address: 0x0124
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kVARh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Reactive Energy L3"
+    id: kVARhL3
+    register_type: holding
+    address: 0x0126
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kVARh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Total Reactive Energy"
+    id: kVARh
+    register_type: holding
+    address: 0x0128
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kVARh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Apparent Energy L1"
+    id: kVAhL1
+    register_type: holding
+    address: 0x012A
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kVAh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Apparent Energy L2"
+    id: kVAhL2
+    register_type: holding
+    address: 0x012C
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kVAh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Apparent Energy L3"
+    id: kVAhL3
+    register_type: holding
+    address: 0x012E
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kVAh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Total Apparent Energy"
+    id: kVAh
+    register_type: holding
+    address: 0x0130
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kVAh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Forward Active Energy L1"
+    id: fkWhL1
+    register_type: holding
+    address: 0x0134
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kWh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Forward Active Energy L2"
+    id: fkWhL2
+    register_type: holding
+    address: 0x0136
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kWh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Forward Active Energy L3"
+    id: fkWhL3
+    register_type: holding
+    address: 0x0138
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kWh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Total Forward Active Energy"
+    id: fkWh
+    register_type: holding
+    address: 0x013A
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kWh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Reverse Active Energy L1"
+    id: rkWhL1
+    register_type: holding
+    address: 0x013C
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kWh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Reverse Active Energy L2"
+    id: rkWhL2
+    register_type: holding
+    address: 0x013E
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kWh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Reverse Active Energy L3"
+    id: rkWhL3
+    register_type: holding
+    address: 0x0140
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kWh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Total Reverse Active Energy"
+    id: rkWh
+    register_type: holding
+    address: 0x0142
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kWh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Forward Reactive Energy L1"
+    id: frkWhL1
+    register_type: holding
+    address: 0x0144
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kWh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Forward Reactive Energy L2"
+    id: frkWhL2
+    register_type: holding
+    address: 0x0146
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kWh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Forward Reactive Energy L3"
+    id: frkWhL3
+    register_type: holding
+    address: 0x0148
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kWh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Total Forward Reactive Energy"
+    id: frkWh
+    register_type: holding
+    address: 0x014A
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kWh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Reverse Reactive Energy L1"
+    id: rrkWhL1
+    register_type: holding
+    address: 0x014C
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kWh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Reverse Reactive Energy L2"
+    id: rrkWhL2
+    register_type: holding
+    address: 0x014E
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kWh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Reverse Reactive Energy L3"
+    id: rrkWhL3
+    register_type: holding
+    address: 0x0150
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kWh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Total Reverse Reactive Energy"
+    id: rrkWh
+    register_type: holding
+    address: 0x0152
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kWh
+    accuracy_decimals: 1
+    value_type: U_DWORD  
+    filters:
+      - multiply: 0.01
+
+binary_sensor:
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Overvoltage L1"
+    id: ovL1
+    register_type: holding
+    address: 0x0133
+    bitmask: 0x01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Overvoltage L2"
+    id: ovL2
+    register_type: holding
+    address: 0x0133
+    bitmask: 0x02
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Overvoltage L3"
+    id: ovL3
+    register_type: holding
+    address: 0x0133
+    bitmask: 0x04
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Overcurrent L1"
+    id: ocL1
+    register_type: holding
+    address: 0x0133
+    bitmask: 0x10
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Overcurrent L2"
+    id: ocL2
+    register_type: holding
+    address: 0x0133
+    bitmask: 0x20
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Overcurrent L3"
+    id: ocL3
+    register_type: holding
+    address: 0x0133
+    bitmask: 0x40
+
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Reverse Active Power L1"
+    id: rapL1
+    register_type: holding
+    address: 0x0132
+    bitmask: 0x01
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Reverse Active Power L2"
+    id: rapL2
+    register_type: holding
+    address: 0x0132
+    bitmask: 0x02
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Reverse Active Power L3"
+    id: rapL3
+    register_type: holding
+    address: 0x0132
+    bitmask: 0x04
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Total Reverse Active Power"
+    id: rap
+    register_type: holding
+    address: 0x0132
+    bitmask: 0x08
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Reverse Reactive Power L1"
+    id: rrpL1
+    register_type: holding
+    address: 0x0132
+    bitmask: 0x10
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Reverse Reactive Power L2"
+    id: rrpL2
+    register_type: holding
+    address: 0x0132
+    bitmask: 0x20
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Reverse Reactive Power L3"
+    id: rrpL3
+    register_type: holding
+    address: 0x0132
+    bitmask: 0x40
+  - platform: modbus_controller
+    modbus_controller_id: modbus_device
+    name: "Total Reverse Reactive Power"
+    id: rrp
+    register_type: holding
+    address: 0x0132
+    bitmask: 0x80

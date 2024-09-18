@@ -10,7 +10,7 @@
 ### Installation
 
 In your own yaml file:
-* Specfy the Substitution section with pins used for communication;
+* Specify the Substitution section with pins used for communication;
 * Add link to remote package;
 * Enjoy.
 

@@ -9,6 +9,12 @@
 
 ### Installation
 
+If your device doesn't have an RS485 interface, you need to buy a conversion module.
+
+![image](https://github.com/user-attachments/assets/190ebe81-ed14-4993-8792-38d4aab15757)
+
+[I buy it here](https://www.aliexpress.com/item/32817720482.html)
+
 In your own yaml file:
 * Specify the Substitution section with pins used for communication;
 * Add link to remote package;

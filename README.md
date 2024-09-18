@@ -2,7 +2,8 @@
 [![Donate](https://img.shields.io/badge/donate-Yandex-blueviolet.svg)](https://yoomoney.ru/to/410011383527168)
 # JSY-MK-354
 ### Esphome configuration for JSY-MK-354 Three Phase AC Bi-directional Energy Meter Module Detector
-![image](https://github.com/user-attachments/assets/3ba7d97d-1dfc-460b-8d7e-08f90538f2a0)
+
+![image](https://github.com/user-attachments/assets/41890978-9aa0-4c37-85d4-76221f2583e8)
 
 [Can buy here](https://www.aliexpress.com/item/1005007224895885.html) 
 

@@ -36,4 +36,5 @@ packages:
 ```
 
 ### ToDo
-* Add write to registers Voltage limit,  Current limit, Communication
+* ~~Add write to registers Voltage limit,  Current limit, Communication~~
+* Testing stability

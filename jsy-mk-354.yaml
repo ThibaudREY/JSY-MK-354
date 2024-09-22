@@ -10,30 +10,63 @@ uart:
 modbus:
   id: modbus1
   uart_id: rs485
-  send_wait_time: 200ms
+  send_wait_time: 500ms
+  disable_crc: True
 
 modbus_controller:
 - id: modbus_device
   address: 1
   modbus_id: modbus1
-  command_throttle: 500ms
+  update_interval: 1s
+  setup_priority: -10
+
+select:
+  - platform: template
+    name: "Voltage limit"
+    id: VolLim
+    optimistic: true
+    entity_category: config
+    icon: mdi:sine-wave
+    options:
+      - 240V
+      - 245V
+      - 250V
+      - 253V
+      - 260V
+      - 265V
+      - 270V
+
+  - platform: template
+    name: "Current limit"
+    id: CurLim
+    optimistic: true
+    entity_category: config
+    icon: mdi:current-ac
+    options:
+      - 50A
+      - 80A
+      - 100A
+      - 250A
+      - 500A
 
 sensor:  
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Voltage upper limit"
-    id: Vollim
+    id: vl
     register_type: holding
     address: 0x0020
     value_type: U_WORD
     device_class: voltage
     state_class: measurement
     unit_of_measurement: V
+    entity_category: diagnostic
+    icon: mdi:sine-wave
     
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Current limit "
-    id: Curlim
+    id: cl
     register_type: holding
     address: 0x0021
     value_type: U_WORD
@@ -42,7 +75,9 @@ sensor:
     unit_of_measurement: A
     filters:
       - multiply: 0.1
-  
+    entity_category: diagnostic
+    icon: mdi:current-ac
+
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Voltage L1"
@@ -56,6 +91,7 @@ sensor:
     value_type: U_WORD
     filters:
       - multiply: 0.01
+    icon: mdi:sine-wave
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Voltage L2"
@@ -69,6 +105,7 @@ sensor:
     value_type: U_WORD
     filters:
       - multiply: 0.01
+    icon: mdi:sine-wave
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Voltage L3"
@@ -82,6 +119,7 @@ sensor:
     value_type: U_WORD
     filters:
       - multiply: 0.01
+    icon: mdi:sine-wave
 
   - platform: modbus_controller
     modbus_controller_id: modbus_device
@@ -96,6 +134,7 @@ sensor:
     value_type: U_WORD
     filters:
       - multiply: 0.01
+    icon: mdi:current-ac
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Current L2"
@@ -109,6 +148,7 @@ sensor:
     value_type: U_WORD
     filters:
       - multiply: 0.01
+    icon: mdi:current-ac
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Current L3"
@@ -122,6 +162,7 @@ sensor:
     value_type: U_WORD
     filters:
       - multiply: 0.01
+    icon: mdi:current-ac
 
   - platform: modbus_controller
     modbus_controller_id: modbus_device
@@ -134,6 +175,7 @@ sensor:
     unit_of_measurement: W
     accuracy_decimals: 1
     value_type: U_WORD  
+    icon: mdi:flash
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Active Power L2"
@@ -145,6 +187,7 @@ sensor:
     unit_of_measurement: W
     accuracy_decimals: 1
     value_type: U_WORD  
+    icon: mdi:flash
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Active Power L3"
@@ -156,6 +199,7 @@ sensor:
     unit_of_measurement: W
     accuracy_decimals: 1
     value_type: U_WORD  
+    icon: mdi:flash
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Total Active Power"
@@ -167,6 +211,7 @@ sensor:
     unit_of_measurement: W
     accuracy_decimals: 1
     value_type: U_DWORD  
+    icon: mdi:flash
   
   - platform: modbus_controller
     modbus_controller_id: modbus_device
@@ -179,6 +224,7 @@ sensor:
     unit_of_measurement: VAR
     accuracy_decimals: 1
     value_type: U_WORD
+    icon: mdi:flash
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Reactive Power L2"
@@ -190,6 +236,7 @@ sensor:
     unit_of_measurement: VAR
     accuracy_decimals: 1
     value_type: U_WORD
+    icon: mdi:flash
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Reactive Power L3"
@@ -201,6 +248,7 @@ sensor:
     unit_of_measurement: VAR
     accuracy_decimals: 1
     value_type: U_WORD
+    icon: mdi:flash
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Total Reactive Power"
@@ -212,6 +260,7 @@ sensor:
     unit_of_measurement: VAR
     accuracy_decimals: 1
     value_type: U_DWORD
+    icon: mdi:flash
   
   - platform: modbus_controller
     modbus_controller_id: modbus_device
@@ -224,6 +273,7 @@ sensor:
     unit_of_measurement: VA
     accuracy_decimals: 1
     value_type: U_WORD
+    icon: mdi:flash
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Apparent Power L2"
@@ -235,6 +285,7 @@ sensor:
     unit_of_measurement: VA
     accuracy_decimals: 1
     value_type: U_WORD
+    icon: mdi:flash
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Apparent Power L3"
@@ -246,6 +297,7 @@ sensor:
     unit_of_measurement: VA
     accuracy_decimals: 1
     value_type: U_WORD
+    icon: mdi:flash
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Total Apparent Power"
@@ -257,6 +309,7 @@ sensor:
     unit_of_measurement: VA
     accuracy_decimals: 1
     value_type: U_DWORD
+    icon: mdi:flash
   
   - platform: modbus_controller
     modbus_controller_id: modbus_device
@@ -271,6 +324,7 @@ sensor:
     value_type: U_WORD
     filters:
       - multiply: 0.01
+    icon: mdi:sine-wave
   
   - platform: modbus_controller
     modbus_controller_id: modbus_device
@@ -285,6 +339,7 @@ sensor:
     value_type: U_WORD
     filters:
       - multiply: 0.001
+    icon: mdi:angle-acute
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Power Factor L2"
@@ -298,6 +353,7 @@ sensor:
     value_type: U_WORD
     filters:
       - multiply: 0.001
+    icon: mdi:angle-acute
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Power Factor L3"
@@ -311,6 +367,7 @@ sensor:
     value_type: U_WORD
     filters:
       - multiply: 0.001
+    icon: mdi:angle-acute
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Total Power Factor"
@@ -324,6 +381,7 @@ sensor:
     value_type: U_WORD
     filters:
       - multiply: 0.001
+    icon: mdi:angle-acute
 
   - platform: modbus_controller
     modbus_controller_id: modbus_device
@@ -338,6 +396,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Active Energy L2"
@@ -351,6 +410,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Active Energy L3"
@@ -364,6 +424,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Total Active Energy"
@@ -377,6 +438,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
 
   - platform: modbus_controller
     modbus_controller_id: modbus_device
@@ -391,6 +453,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Reactive Energy L2"
@@ -404,6 +467,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Reactive Energy L3"
@@ -417,6 +481,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Total Reactive Energy"
@@ -430,6 +495,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
 
   - platform: modbus_controller
     modbus_controller_id: modbus_device
@@ -444,6 +510,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Apparent Energy L2"
@@ -457,6 +524,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Apparent Energy L3"
@@ -470,6 +538,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Total Apparent Energy"
@@ -483,6 +552,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
 
   - platform: modbus_controller
     modbus_controller_id: modbus_device
@@ -497,6 +567,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Forward Active Energy L2"
@@ -510,6 +581,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Forward Active Energy L3"
@@ -523,6 +595,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Total Forward Active Energy"
@@ -536,6 +609,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
 
   - platform: modbus_controller
     modbus_controller_id: modbus_device
@@ -550,6 +624,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Reverse Active Energy L2"
@@ -563,6 +638,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Reverse Active Energy L3"
@@ -576,6 +652,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Total Reverse Active Energy"
@@ -589,6 +666,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
 
   - platform: modbus_controller
     modbus_controller_id: modbus_device
@@ -603,6 +681,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Forward Reactive Energy L2"
@@ -616,6 +695,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Forward Reactive Energy L3"
@@ -629,6 +709,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Total Forward Reactive Energy"
@@ -642,6 +723,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
 
   - platform: modbus_controller
     modbus_controller_id: modbus_device
@@ -656,6 +738,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Reverse Reactive Energy L2"
@@ -669,6 +752,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Reverse Reactive Energy L3"
@@ -682,6 +766,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Total Reverse Reactive Energy"
@@ -695,6 +780,7 @@ sensor:
     value_type: U_DWORD  
     filters:
       - multiply: 0.01
+    icon: mdi:transmission-tower
 
 binary_sensor:
   - platform: modbus_controller
@@ -704,6 +790,7 @@ binary_sensor:
     register_type: holding
     address: 0x0133
     bitmask: 0x01
+    icon: mdi:sine-wave
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Overvoltage L2"
@@ -711,6 +798,7 @@ binary_sensor:
     register_type: holding
     address: 0x0133
     bitmask: 0x02
+    icon: mdi:sine-wave
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Overvoltage L3"
@@ -718,6 +806,7 @@ binary_sensor:
     register_type: holding
     address: 0x0133
     bitmask: 0x04
+    icon: mdi:sine-wave
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Overcurrent L1"
@@ -725,6 +814,7 @@ binary_sensor:
     register_type: holding
     address: 0x0133
     bitmask: 0x10
+    icon: mdi:current-ac
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Overcurrent L2"
@@ -732,6 +822,7 @@ binary_sensor:
     register_type: holding
     address: 0x0133
     bitmask: 0x20
+    icon: mdi:current-ac
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Overcurrent L3"
@@ -739,6 +830,7 @@ binary_sensor:
     register_type: holding
     address: 0x0133
     bitmask: 0x40
+    icon: mdi:current-ac
 
   - platform: modbus_controller
     modbus_controller_id: modbus_device
@@ -747,6 +839,7 @@ binary_sensor:
     register_type: holding
     address: 0x0132
     bitmask: 0x01
+    icon: mdi:flash
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Reverse Active Power L2"
@@ -754,6 +847,7 @@ binary_sensor:
     register_type: holding
     address: 0x0132
     bitmask: 0x02
+    icon: mdi:flash
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Reverse Active Power L3"
@@ -761,6 +855,7 @@ binary_sensor:
     register_type: holding
     address: 0x0132
     bitmask: 0x04
+    icon: mdi:flash
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Total Reverse Active Power"
@@ -768,6 +863,7 @@ binary_sensor:
     register_type: holding
     address: 0x0132
     bitmask: 0x08
+    icon: mdi:flash
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Reverse Reactive Power L1"
@@ -775,6 +871,7 @@ binary_sensor:
     register_type: holding
     address: 0x0132
     bitmask: 0x10
+    icon: mdi:flash
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Reverse Reactive Power L2"
@@ -782,6 +879,7 @@ binary_sensor:
     register_type: holding
     address: 0x0132
     bitmask: 0x20
+    icon: mdi:flash
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Reverse Reactive Power L3"
@@ -789,6 +887,7 @@ binary_sensor:
     register_type: holding
     address: 0x0132
     bitmask: 0x40
+    icon: mdi:flash
   - platform: modbus_controller
     modbus_controller_id: modbus_device
     name: "Total Reverse Reactive Power"
@@ -796,3 +895,82 @@ binary_sensor:
     register_type: holding
     address: 0x0132
     bitmask: 0x80
+    icon: mdi:flash
+
+button:
+#  - platform: uart
+#    name: "UART baud_rate"
+#    data: [0x01, 0x10, 0x00, 0x04, 0x00, 0x01, 0x02, 0x01, 0x06, 0x26, 0x46] # 9600
+#    data: [0x01, 0x10, 0x00, 0x04, 0x00, 0x01, 0x02, 0x01, 0x07, 0xE7, 0x86] # 19200
+#    data: [0x01, 0x10, 0x00, 0x04, 0x00, 0x01, 0x02, 0x01, 0x08, 0xA7, 0x82] # 38400
+#    entity_category: config
+
+  - platform: template
+    name: "Set Current Limit"
+    entity_category: config
+    on_press:
+        - if:
+            condition:
+              - lambda: 'return id(CurLim).state == "50A";'
+            then:
+              - uart.write: [0x01, 0x10, 0x00, 0x21, 0x00, 0x01, 0x02, 0x01, 0xF4, 0xA0, 0xF6]
+        - if:
+            condition:
+              - lambda: 'return id(CurLim).state == "80A";'
+            then:
+              - uart.write: [0x01, 0x10, 0x00, 0x21, 0x00, 0x01, 0x02, 0x03, 0x20, 0xA1, 0xC9]
+        - if:
+            condition:
+              - lambda: 'return id(CurLim).state == "100A";'
+            then:
+              - uart.write: [0x01, 0x10, 0x00, 0x21, 0x00, 0x01, 0x02, 0x03, 0xE8, 0xA0, 0x5F]
+        - if:
+            condition:
+              - lambda: 'return id(CurLim).state == "250A";'
+            then:
+              - uart.write: [0x01, 0x10, 0x00, 0x21, 0x00, 0x01, 0x02, 0x09, 0xC4, 0xA7, 0x22]
+        - if:
+            condition:
+              - lambda: 'return id(CurLim).state == "500A";'
+            then:
+              - uart.write: [0x01, 0x10, 0x00, 0x21, 0x00, 0x01, 0x02, 0x13, 0x88, 0xB7, 0xAD]
+
+  - platform: template
+    name: "Set Voltage Limit"
+    entity_category: config
+    on_press:
+        - if:
+            condition:
+              - lambda: 'return id(VolLim).state == "240V";'
+            then:
+              - uart.write: [0x01, 0x10, 0x00, 0x20, 0x00, 0x01, 0x02, 0x00, 0xF0, 0xA1, 0x74]
+        - if:
+            condition:
+              - lambda: 'return id(VolLim).state == "245V";'
+            then:
+              - uart.write: [0x01, 0x10, 0x00, 0x20, 0x00, 0x01, 0x02, 0x00, 0xF5, 0x61, 0x77]
+        - if:
+            condition:
+              - lambda: 'return id(VolLim).state == "250V";'
+            then:
+              - uart.write: [0x01, 0x10, 0x00, 0x20, 0x00, 0x01, 0x02, 0x00, 0xFA, 0x21, 0x73]
+        - if:
+            condition:
+              - lambda: 'return id(VolLim).state == "253V";'
+            then:
+              - uart.write: [0x01, 0x10, 0x00, 0x20, 0x00, 0x01, 0x02, 0x00, 0xFD, 0x60, 0xB1]
+        - if:
+            condition:
+              - lambda: 'return id(VolLim).state == "260V";'
+            then:
+              - uart.write: [0x01, 0x10, 0x00, 0x20, 0x00, 0x01, 0x02, 0x01, 0x04, 0xA1, 0x63]
+        - if:
+            condition:
+              - lambda: 'return id(VolLim).state == "265V";'
+            then:
+              - uart.write: [0x01, 0x10, 0x00, 0x20, 0x00, 0x01, 0x02, 0x01, 0x09, 0x60, 0xA6]
+        - if:
+            condition:
+              - lambda: 'return id(VolLim).state == "270V";'
+            then:
+              - uart.write: [0x01, 0x10, 0x00, 0x20, 0x00, 0x01, 0x02, 0x01, 0x0E, 0x21, 0x64]

@@ -14,11 +14,11 @@ modbus:
     disable_crc: True
 
 modbus_controller:
-- id: modbus_device
-  address: 1
-  modbus_id: modbus1
-  update_interval: 1s
-  setup_priority: -10
+  - id: modbus_device
+    address: 1
+    modbus_id: modbus1
+    update_interval: 1s
+    setup_priority: -10
 
 select:
   - platform: template

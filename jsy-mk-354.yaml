@@ -1,11 +1,11 @@
 uart:
-  tx_pin: $txpin
-  rx_pin: $rxpin
-  baud_rate: 9600
-  data_bits: 8
-  parity: NONE
-  stop_bits: 1 
-  id: rs485 
+  - id: rs485 
+    tx_pin: $txpin
+    rx_pin: $rxpin
+    baud_rate: 9600
+    data_bits: 8
+    parity: NONE
+    stop_bits: 1 
 
 modbus:
   id: modbus1

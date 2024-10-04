@@ -913,7 +913,9 @@ button:
             condition:
               - lambda: 'return id(CurLim).state == "50A";'
             then:
-              - uart.write: [0x01, 0x10, 0x00, 0x21, 0x00, 0x01, 0x02, 0x01, 0xF4, 0xA0, 0xF6]
+              - uart.write: 
+                  id: rs485
+                  data: [0x01, 0x10, 0x00, 0x21, 0x00, 0x01, 0x02, 0x01, 0xF4, 0xA0, 0xF6]
         - if:
             condition:
               - lambda: 'return id(CurLim).state == "80A";'

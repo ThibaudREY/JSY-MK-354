@@ -8,10 +8,10 @@ uart:
     stop_bits: 1 
 
 modbus:
-  id: modbus1
-  uart_id: rs485
-  send_wait_time: 500ms
-  disable_crc: True
+  - id: modbus1
+    uart_id: rs485
+    send_wait_time: 500ms
+    disable_crc: True
 
 modbus_controller:
 - id: modbus_device

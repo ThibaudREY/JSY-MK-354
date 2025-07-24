@@ -5,19 +5,19 @@ uart:
     baud_rate: 9600
     data_bits: 8
     parity: NONE
-    stop_bits: 2 
+    stop_bits: 1
 
 modbus:
   - id: modbus1
     uart_id: rs485
-    send_wait_time: 500ms
+    send_wait_time: 1000ms
     disable_crc: True
 
 modbus_controller:
   - id: modbus_device
     address: 1
     modbus_id: modbus1
-    update_interval: 10s
+    update_interval: 6s
     setup_priority: -10
 
 select:

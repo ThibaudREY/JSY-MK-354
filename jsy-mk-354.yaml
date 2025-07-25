@@ -10,14 +10,14 @@ uart:
 modbus:
   - id: modbus1
     uart_id: rs485
-    send_wait_time: 1000ms
+    send_wait_time: 500ms
     disable_crc: True
 
 modbus_controller:
   - id: modbus_device
     address: 1
     modbus_id: modbus1
-    update_interval: 6s
+    update_interval: 2s
     setup_priority: -10
 
 select:

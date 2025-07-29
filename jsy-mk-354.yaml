@@ -781,6 +781,12 @@ sensor:
     filters:
       - multiply: 0.01
     icon: mdi:transmission-tower
+  - platform: template
+    name: "Real power"
+    unit_of_measurement: W
+    lambda: |-
+      return id(akW).state * (rap ? -1 : 1);
+    update_interval: 500ms
 
 binary_sensor:
   - platform: modbus_controller
